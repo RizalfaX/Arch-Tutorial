@@ -152,17 +152,17 @@ Untuk *BIOS*, gunakan `syslinux`
 # pacman -S syslinux
 # syslinux-install_update -i -a -m
 ```
-
+Jika sudah aman, keluar dari root dengan `$ exit`
 ## Bagian akhir: Reboot
 Sebelum rebot, aktifkan service penting.
 
 ### Unmount
 ```
-umount -R /mnt
+$ umount -R /mnt
 ```
 or
 ```
-umount all
+$ umount all
 ```
 
 reboot dengan `reboot`
