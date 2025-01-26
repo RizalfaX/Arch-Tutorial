@@ -132,11 +132,11 @@ KEYMAP=us
 ```
 cek lagi dengan `# mkinitcpio -p linux-lts`
 
-### Mengatur User
+### Menambahkan [pengguna](https://wiki.archlinux.org/title/Users_and_groups#User_management)
 Membuat nama host, edit `/etc/hostname` kemudian tulis nama host nya, setelah itu atur password dengan `passwd`
 Menambahkan user, contoh :
 ```
-useradd -m -G wheel -s /bin/bash name
+useradd -m -G wheel -s /bin/bash dapz
 ```
 edit `VISUDO`
 
