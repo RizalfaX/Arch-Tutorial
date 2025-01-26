@@ -17,24 +17,23 @@ Maka anda siap mengikuti tutorial ini.
 ## Bagian 1: Pre-Installation 
 
 ### Tahap 1: Konfigurasi virtual console
-* Gunakan `loadkeys` untuk mengatur [keymap](https://wiki.archlinux.org/title/Linux_console/Keyboard_configuration), contoh untuk *US*
+* Gunakan `loadkeys` untuk mengatur [keymap](https://wiki.archlinux.org/title/Linux_console/Keyboard_configuration), contoh untuk *United State English*
 ```
 # loadkeys us
 ```
-* Memperbesar ukuran font :
-```
-# setfont ter-132b
-```
+Untuk melihat keymap yang tersedia, gunakan `localectl list-keymaps`
+
 ### Tahap 2: Menghubungkan ke internet
 Pilihan untuk menghubungkan ke internet :
-- Ethernet
-- Wi-Fi
-- Mobile broadband modem
+- Ethernet : plug in cable
+- Wi-Fi : use `iwctl`
+- Mobile broadband modem : use `nmcli`
 
 Verifikasi internet `ping 8.8.8.8`, jika output nya ada yang seperti ini : `Name or service not known` maka anda belum terhubung ke internet.
 
 Cek waktu sistem `timedatectl`
-### Tahap 3: Mempartisi disk
+
+### Tahap 3: Mempartisi disk dan mouting
 Identifikasi [block device](https://wiki.archlinux.org/title/Device_file#Block_devices) menggunakan `lsblk`
 Gunakan `cfdisk` untuk mengatur partisi.
 Buatlah partisi sesuai kebutuhan. Misal
@@ -42,7 +41,7 @@ Buatlah partisi sesuai kebutuhan. Misal
 2. Home 
 3. Boot 
 4. Swap 
-### Tahap 4: Format dan Mount Partisi
+
 Partisi *root* :
 ```
 $ mkfs.ext4 /dev/root_partition
@@ -59,7 +58,7 @@ Untuk partisi *swap*
 $ mkswap /dev/swap_partition
 $ swapon /de/swap_partition
 ```
-#### Boot 
+#### Boot Partition
 Bagi pengguna dengan sistem *EFI* format dengan :
 ```
 $ mkdir /mnt/boot/efi
