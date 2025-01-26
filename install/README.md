@@ -80,31 +80,31 @@ $ set 1 boot on
 
 ## Bagian kedua: Installation
 
-* mengatur mirror, edit `/etc/pacman.d/mirrorlist`
+Atur [mirro](https://wiki.archlinux.org/title/Mirrors) sesuai kebutuhan : `/etc/pacman.d/mirrorlist`
 
 ### Tahap 1: Install package 
 Package wajib di install : `base`, `linux`, `linux-firmware`, opsional: `linux-lts`
 Package lain yang juga penting
 - hardare bug and security fixes : `amd-ucode`, `intel-ucode`
-- Boot loader : `grub` (untuk efi sistem), `syslinux`
+- [Boot loader](https://wiki.archlinux.org/title/Arch_boot_process) : `grub` (untuk *UEFI* sistem), `syslinux` (untuk *BIOS* sistem)
 - Alat untuk membuild packages linux : `base-devel`
 - Network manager : `networkmanager`
 - text editor untuk console : `vim` or `nano`
 Gunakan `pacstrap` untuk mengunduh packages, contoh :
 ```
-pacstrap -K /mnt base
+$ pacstrap -K /mnt base
 ```
 ## Bagian ketiga: Mengkonfigurasi sistem
 * membuat [fstab](https://wiki.archlinux.org/title/Fstab) file : 
 ```
-# genfstab -U /mnt >> /mnt/etc/fstab
+& genfstab -U /mnt >> /mnt/etc/fstab
 ```
 cek lagi dengan : `# cat /mnt/etc/fstab`
-opsional : edit UUID sesuai partisi
+opsional : edit *UUID* pada fstab file sesuai partisi
 ### Konfigurasi root
 Ganti ke root :
 ```
-# arch-chroot /mnt
+$ arch-chroot /mnt
 ```
 Hal yang akan dilakukan
 1. Mengatur time zone 
@@ -112,22 +112,22 @@ Hal yang akan dilakukan
 3. Menambahkan pengguna / user
 4. Mengatur bootloader
 ```
-# arch-chroot /mnt
+$ arch-chroot /mnt
 ```
-* Mengatur waktu
+* Mengatur [time zone](https://wiki.archlinux.org/title/System_time#Time_zone)
 ```
-# ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
-# hwclock --systohc
+$ ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+& hwclock --systohc
 ```
-* locale, edit `/etc/locale.gen` dan hapus komentar untuk `en_US.UTF-8 UTF-8`, kemudian jalankan :
+* Mengatur locale, edit `/etc/locale.gen` dan hapus komentar untuk `en_US.UTF-8 UTF-8`, kemudian jalankan :
 ```
-# locale-gen
+$ locale-gen
 ```
 Buat `/etc/locale.conf`, dan tulis :
 ```
 LANG=en_US.UTF-8
 ```
-opsional : Mengatur keyboard layout, edit `/etc/vconsole.conf` :
+opsional : Mengatur keyboard layout, edit `/etc/vconsole.conf` dan tulis
 ```
 KEYMAP=us
 ```
@@ -147,7 +147,7 @@ Untuk *UEFI* sistem, gunakan `grub`
 # grub-install 
 # grub-mkconfig -o /boot/grub/grub.cfg
 ```
-Untuk *LEGACY*, gunakan `syslinux`
+Untuk *BIOS*, gunakan `syslinux`
 ```
 # pacman -S syslinux
 # syslinux-install_update -i -a -m
@@ -166,6 +166,8 @@ umount all
 ```
 
 reboot dengan `reboot`
+
+[Tutorial lainnya]()
 
 Reference
 [LEGACY SETUP](https://gist.github.com/xbns/cb8d0f9734a99c19c2503d8439f79e71#file-arch-linux-installation-on-mbr-system-md)
