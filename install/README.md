@@ -2,38 +2,38 @@
 
 Kunjungi tutorial resmi [di sini](https://wiki.archlinux.org/title/Installation_guide) 
 
-- Download the official image file from official site.
-- Membuat bootable
-- Boot with thah
+Sebelum mengikuti tutorial ini, pastikan anda telah melakukan hal berikut
+- Download the official [image](https://archlinux.org/download/) file.
+- Membuat bootable 
+- Boot ke bootable
 
-Jika anda melihat ini :
+Jika anda melihat ini di komputer anda :
 ```
 [ root@archiso `]$ 
 ```
+
 Maka anda siap mengikuti tutorial ini.
 
 ## Bagian 1: Pre-Installation 
 
-### Tahap 1: Kostumisasi virtual console
-* Gunakan `loadkeys` untuk mengatur keyboard, contoh untuk *US*
+### Tahap 1: Konfigurasi virtual console
+* Gunakan `loadkeys` untuk mengatur [keymap](https://wiki.archlinux.org/title/Linux_console/Keyboard_configuration), contoh untuk *US*
 ```
 # loadkeys us
 ```
-* Mengubah ukuran font :
+* Memperbesar ukuran font :
 ```
 # setfont ter-132b
 ```
 ### Tahap 2: Menghubungkan ke internet
-Network device configuration
-```
-# ip link
-```
 Pilihan untuk menghubungkan ke internet :
 - Ethernet
 - Wi-Fi
 - Mobile broadband modem
+
 Verifikasi internet `ping 8.8.8.8`, jika output nya ada yang seperti ini : `Name or service not known` maka anda belum terhubung ke internet.
-Cek waktu sistem `# timedatectl`
+
+Cek waktu sistem `timedatectl`
 ### Tahap 3: Mempartisi disk
 Identifikasi [block device](https://wiki.archlinux.org/title/Device_file#Block_devices) menggunakan `lsblk`
 Gunakan `cfdisk` untuk mengatur partisi.
@@ -45,37 +45,37 @@ Buatlah partisi sesuai kebutuhan. Misal
 ### Tahap 4: Format dan Mount Partisi
 Partisi *root* :
 ```
-# mkfs.ext4 /dev/root_partition
-# mount /dev/root_partition /mnt
+$ mkfs.ext4 /dev/root_partition
+$ mount /dev/root_partition /mnt
 ```
 Partisi *home* : 
 ```
-# mkfs.ext4 /dev/home_partition
-# mkdir -p /mnt/home
-# mount /dev/home_partition /mnt/home
+$ mkfs.ext4 /dev/home_partition
+$ mkdir -p /mnt/home
+$ mount /dev/home_partition /mnt/home
 ```
 Untuk partisi *swap*
 ```
-# mkswap /dev/swap_partition
-# swapon /de/swap_partition
+$ mkswap /dev/swap_partition
+$ swapon /de/swap_partition
 ```
 #### Boot 
 Bagi pengguna dengan sistem *EFI* format dengan :
 ```
-# mkdir /mnt/boot/efi
-# mkfs.fat -F 32 /dev/efi_partition
-# mount /dev/efi_partition /mnt/boot/efi
+$ mkdir /mnt/boot/efi
+$ mkfs.fat -F 32 /dev/efi_partition
+$ mount /dev/efi_partition /mnt/boot/efi
 ```
 Bagi pengguna dengan sistem *MBR* format dengan 
 ```
-# mkfs.ext4 /dev/boot_partition
-# mkdir -p /mnt/Boot
-# mount /dev/boot_partition /mnt/boot
+$ mkfs.ext4 /dev/boot_partition
+$ mkdir -p /mnt/Boot
+$ mount /dev/boot_partition /mnt/boot
 ```
-verifikasi boot flag
+verifikasi boot flag, untuk mengatur boot flag gunakan :
 ```
-# parted /dev/sda
-# set 1 boot on 
+$ parted /dev/sda
+$ set 1 boot on 
 ```
 
 ## Bagian kedua: Installation
