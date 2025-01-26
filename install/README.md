@@ -24,11 +24,11 @@ Maka anda siap mengikuti tutorial ini.
 # setfont ter-132b
 ```
 ### Tahap 2: Menghubungkan ke internet
-* Network device configuration
+Network device configuration
 ```
 # ip link
 ```
-* Pilihan untuk menghubungkan ke internet :
+Pilihan untuk menghubungkan ke internet :
 - Ethernet
 - Wi-Fi
 - Mobile broadband modem
@@ -42,44 +42,50 @@ Buatlah partisi sesuai kebutuhan. Misal
 2. Home 
 3. Boot 
 4. Swap 
-### Tahap 4: Memformat partisi
+### Tahap 4: Format dan Mount Partisi
 Partisi *root* :
 ```
 # mkfs.ext4 /dev/root_partition
+# mount /dev/root_partition /mnt
+```
+Partisi *home* : 
+```
+# mkfs.ext4 /dev/home_partition
+# mkdir -p /mnt/home
+# mount /dev/home_partition /mnt/home
 ```
 Untuk partisi *swap*
 ```
 # mkswap /dev/swap_partition
+# swapon /de/swap_partition
 ```
-Bagi pengguna dengan sistem EFI format dengan :
+#### Boot 
+Bagi pengguna dengan sistem *EFI* format dengan :
 ```
-mkfs.fat -F 32 /dev/efi_partition
+# mkdir /mnt/boot/efi
+# mkfs.fat -F 32 /dev/efi_partition
+# mount /dev/efi_partition /mnt/boot/efi
 ```
-Bagi pengguna dengan sistem MBR format dengan 
+Bagi pengguna dengan sistem *MBR* format dengan 
 ```
-mkfs.ext4 /dev/boot_partition
-```
-### Tahap 5: Mounting
-Partisi *root* :
-```
-# mount /dev/root_partition /mnt
-```
-Partisi *swap*
-```
-# swapon /dev/swap_partition
-```
-Khusus untuk UFI sistem :
-```
-# mount --mkdir /dev/efi_partition /mnt/boot/efi 
-```
-Khusus untuk MBR sistem
-```
+# mkfs.ext4 /dev/boot_partition
+# mkdir -p /mnt/Boot
 # mount /dev/boot_partition /mnt/boot
 ```
+verifikasi boot flag
+```
+# parted /dev/sda
+# set 1 boot on 
+```
+
 ## Bagian kedua: Installation
+
+* mengatur mirror, edit `/etc/pacman.d/mirrorlist`
+
 ### Tahap 1: Install package 
-Package wajib di install : `base`, `linux`, `linux-firmware`
+Package wajib di install : `base`, `linux`, `linux-firmware`, opsional: `linux-lts`
 Package lain yang juga penting
+- hardare bug and security fixes : `amd-ucode`, `intel-ucode`
 - Boot loader : `grub` (untuk efi sistem), `syslinux`
 - Alat untuk membuild packages linux : `base-devel`
 - Network manager : `networkmanager`
@@ -94,6 +100,7 @@ pacstrap -K /mnt base
 # genfstab -U /mnt >> /mnt/etc/fstab
 ```
 cek lagi dengan : `# cat /mnt/etc/fstab`
+opsional : edit UUID sesuai partisi
 ### Konfigurasi root
 Ganti ke root :
 ```
@@ -112,8 +119,7 @@ Hal yang akan dilakukan
 # ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 # hwclock --systohc
 ```
-* locale 
-Edit `/etc/locale.gen` dan hapus komentar untuk `en_US.UTF-8 UTF-8`, kemudian jalankan :
+* locale, edit `/etc/locale.gen` dan hapus komentar untuk `en_US.UTF-8 UTF-8`, kemudian jalankan :
 ```
 # locale-gen
 ```
@@ -125,6 +131,8 @@ opsional : Mengatur keyboard layout, edit `/etc/vconsole.conf` :
 ```
 KEYMAP=us
 ```
+cek lagi dengan `# mkinitcpio -p linux-lts`
+
 ### Mengatur User
 Membuat nama host, edit `/etc/hostname` kemudian tulis nama host nya, setelah itu atur password dengan `passwd`
 Menambahkan user, contoh :
@@ -132,13 +140,17 @@ Menambahkan user, contoh :
 useradd -m -G wheel -s /bin/bash name
 ```
 edit `VISUDO`
-Opsional :
-* mengatur mirror, edit `/etc/pacman.d/mirrorlist`
+
 #### Mengatur bootloader
 Untuk *UEFI* sistem, gunakan `grub` 
 ```
 # grub-install 
 # grub-mkconfig -o /boot/grub/grub.cfg
+```
+Untuk *LEGACY*, gunakan `syslinux`
+```
+# pacman -S syslinux
+# syslinux-install_update -i -a -m
 ```
 
 ## Bagian akhir: Reboot
