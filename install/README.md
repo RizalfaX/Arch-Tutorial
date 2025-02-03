@@ -3,60 +3,59 @@
 Kunjungi tutorial resmi [di sini](https://wiki.archlinux.org/title/Installation_guide) 
 
 Sebelum mengikuti tutorial ini, pastikan anda telah melakukan hal berikut
-- Download the official [image](https://archlinux.org/download/) file.
+- Download official [image](https://archlinux.org/download/) file.
 - Membuat bootable 
 - Boot ke bootable
 
-Jika anda melihat ini di komputer anda :
+Jika anda melihat ini di komputer :
+
 ```
 [ root@archiso `]$ 
 ```
 
 Maka anda siap mengikuti tutorial ini.
 
-## Bagian 1: Pre-Installation 
-
-### Tahap 1: Konfigurasi virtual console
+## Monfigurasi virtual console
 * Gunakan `loadkeys` untuk mengatur [keymap](https://wiki.archlinux.org/title/Linux_console/Keyboard_configuration), contoh untuk *United State English*
-```
-# loadkeys us
-```
-Untuk melihat keymap yang tersedia, gunakan `localectl list-keymaps`
 
-### Tahap 2: Menghubungkan ke internet
-Pilihan untuk menghubungkan ke internet :
+```
+$ loadkeys us
+```
+
+Untuk melihat keymap yang tersedia, gunakan `$ localectl list-keymaps`
+
+## Menghubungkan ke internet
+Proses instalasi Arch linux membutuhkan koneksi internet. Beberapa pilihan untuk menghubungkan ke internet :
 - Ethernet : plug in cable
 - Wi-Fi : use `iwctl`
 - Mobile broadband modem : use `nmcli`
 
-Verifikasi internet `ping 8.8.8.8`, jika output nya ada yang seperti ini : `Name or service not known` maka anda belum terhubung ke internet.
+Untuk memverifikasi internet `$ ping 8.8.8.8`, jika output nya ada yang seperti ini : `Name or service not known` maka komputer belum terhubung ke internet.
 
-Cek waktu sistem `timedatectl`
-
-### Tahap 3: Mempartisi disk dan mouting
+## Mempartisi disk dan mouting
 Identifikasi [block device](https://wiki.archlinux.org/title/Device_file#Block_devices) menggunakan `lsblk`
 Gunakan `cfdisk` untuk mengatur partisi.
-Buatlah partisi sesuai kebutuhan. Misal
-1. Root 
-2. Home 
-3. Boot 
-4. Swap 
+Buatlah partisi sesuai kebutuhan. Misalnya : 
+1. Partisi Root 
+2. Partisi Home 
+3. Partisi boot 
+4. Partisi swap
 
-Partisi *root* :
+* qPartisi *root* :
 ```
-$ mkfs.ext4 /dev/root_partition
-$ mount /dev/root_partition /mnt
+$ mkfs.ext4 /dev/*root_partition*
+$ mount /dev/*root_partition* /mnt
 ```
 Partisi *home* : 
 ```
-$ mkfs.ext4 /dev/home_partition
+$ mkfs.ext4 /dev/*home_partition*
 $ mkdir -p /mnt/home
-$ mount /dev/home_partition /mnt/home
+$ mount /dev/*home_partition* /mnt/home
 ```
 Untuk partisi *swap*
 ```
-$ mkswap /dev/swap_partition
-$ swapon /de/swap_partition
+$ mkswap /dev/*swap_partition*
+$ swapon /de/*swap_partition*
 ```
 #### Boot Partition
 Bagi pengguna dengan sistem *EFI* format dengan :
