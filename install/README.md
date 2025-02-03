@@ -70,7 +70,7 @@ $ mkfs.ext4 /dev/boot_partition
 $ mkdir -p /mnt/Boot
 $ mount /dev/boot_partition /mnt/boot
 ```
-verifikasi boot flag, untuk mengatur boot flag gunakan :
+Atur mengatur boot flag gunakan :
 ```
 $ parted /dev/sda
 $ set 1 boot on 
@@ -115,7 +115,7 @@ $ arch-chroot /mnt
 * Mengatur [time zone](https://wiki.archlinux.org/title/System_time#Time_zone)
 ```
 $ ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
-& hwclock --systohc
+$ hwclock --systohc
 ```
 * Mengatur locale, edit `/etc/locale.gen` dan hapus komentar untuk `en_US.UTF-8 UTF-8`, kemudian jalankan :
 ```
